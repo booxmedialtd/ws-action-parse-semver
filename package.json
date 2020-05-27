@@ -1,0 +1,25 @@
+{
+  "name": "ws-action-parse-semver",
+  "version": "1.0.0",
+  "description": "Github action that can be used parse a semantic version. It leverages python [package](https://pypi.org/project/semver/) behind the scene.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/booxmedialtd/ws-action-parse-semver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/booxmedialtd/ws-action-parse-semver/issues"
+  },
+  "homepage": "https://github.com/booxmedialtd/ws-action-parse-semver#readme",
+  "dependencies": {
+    "@actions/core": "^1.2",
+    "@actions/github": "^2.2",
+    "semver": "^7.3"
+  }
+}
