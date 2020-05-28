@@ -46,19 +46,19 @@ Full representation of the semver
 
 ## Example usage
 
-### With a extractor regex
+### With a extractor regex 
 ```
  - name: Example parse semver 
-   uses: booxmedialtd/ws-parse-tag@v1.0
+   uses: booxmedialtd/ws-action-parse-semver@v1
    with:
      input_string: 'refs/tags/v1.0.4'
      version_extractor_regex: '\/v(.*)$'
 ```
 
-### Without a extractor regex
+### Without a extractor regex (input_string must be a valid semver)
 ```
  - name: Example parse semver 
-   uses: booxmedialtd/ws-parse-tag@v1.0
+   uses: booxmedialtd/ws-action-parse-semver@v1
    with:
      input_string: '1.0.4'
 ```
