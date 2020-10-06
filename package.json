@@ -4,7 +4,7 @@
   "description": "Github action that can be used parse a semantic version. It leverages python [package](https://pypi.org/project/semver/) behind the scene.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./node_modules/.bin/webpack --target node index.js -o dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,9 @@
     "@actions/core": "^1.2",
     "@actions/github": "^2.2",
     "semver": "^7.3"
+  },
+  "devDependencies": {
+    "webpack": "^4.44",
+    "webpack-cli": "^3.3"
   }
 }
