@@ -1,0 +1,54 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  release:
+    name: Tag release
+    if: github.event.action != 'labeled'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Bump version on merging Pull Requests with specific labels.
+      # (bump:major,bump:minor,bump:patch)
+      - id: bumpr
+        uses: haya14busa/action-bumpr@v1
+
+      # Find related pull request
+      - id: PR
+        uses: 8BitJonny/gh-get-current-pr@1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          filterOutClosed: false
+
+      # Get tag name
+      - id: tag
+        uses: haya14busa/action-cond@v1
+        with:
+          cond: "${{ startsWith(github.ref, 'refs/tags/') }}"
+          if_true: ${{ github.ref }}
+          if_false: ${{ steps.bumpr.outputs.next_version }}
+
+      # Create release.
+      - uses: actions/create-release@v1
+        if: steps.tag.outputs.value != '' && steps.PR.outputs.number
+        env:
+          # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.value }}
+          release_name: "${{ steps.tag.outputs.value }} ${{ steps.PR.outputs.pr_title }}"
+          body: |-
+            Automatic semver version bump
+
+            #${{ steps.PR.outputs.number }}
+
+            ${{ fromJson(steps.PR.outputs.pr).body }}
+          draft: false
+          prerelease: false
