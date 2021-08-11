@@ -2,6 +2,28 @@
 
 Github action that can be used to parse a semver string. It leverages [semver](https://www.npmjs.com/package/semver) behind the scene.
 
+## Versioning in repository
+
+> Version in this repository means annotated git tag named according to these guidelines.
+
+Currently, versioning will be done automatically on master. Pull requests against master are checked to contain one of the following labels:
+
+- `bump:patch`
+- `bump:minor`
+- `bump:major`
+
+In repository, following versioning needs to be followed:
+
+### Normal semantic versioning after every merge
+
+With [semver](http://semver.org) style, every pull request merge will bump version number in following style:
+
+- *patch*, bugfix, typo, configuration change in non-production: micro version
+- *minor*, backward-compatible new feature, backward-compatible feature enhancement, configuration change: minor version
+- *major*, non-backward compatible change, removal of a feature: major version
+
+Versioning will follow naming of *vMAJOR.MINOR.PATCH*
+
 ## Inputs
 
 ### `input_string`
