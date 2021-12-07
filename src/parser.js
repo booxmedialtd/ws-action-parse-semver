@@ -15,7 +15,7 @@ class SemanticVersion {
 
 function createSemanticVersion(parsedSemver) {
     return new SemanticVersion(
-        parsedSemver.version,
+        parsedSemver.raw,
         parsedSemver.major, parsedSemver.minor, parsedSemver.patch,
         parsedSemver.prerelease.join(SEMVER_PRERELEASE_BUILD_SEPARATOR),
         parsedSemver.build.join(SEMVER_PRERELEASE_BUILD_SEPARATOR)
