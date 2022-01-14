@@ -4,7 +4,7 @@
   "description": "Github action that can be used parse a semantic version. It leverages python [package](https://pypi.org/project/semver/) behind the scene.",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/webpack --target node index.js -o dist/index.js"
+    "build": "./node_modules/.bin/webpack ./index.js --target node --mode production -o ./dist --output-filename index.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "semver": "^7.3"
   },
   "devDependencies": {
-    "webpack": "^5.65.0",
+    "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1"
   }
 }
