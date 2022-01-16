@@ -1,0 +1,58 @@
+name: E2E Tests
+on:
+  pull_request:
+    branches:
+      - master  
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - input_string: 'refs/tags/v1.0.4'
+            input_regex: '\/v(.*)$'
+            expected_outputs: '{"major":"1","minor":"0", "patch": "4", "prerelease": "", "build": "", "fullversion": "1.0.4"}'
+          
+          - input_string: 'refs/tags/v3.4.5-alpha+1.2'
+            input_regex: '\/v(.*)$'
+            expected_outputs: '{"major":"3","minor":"4", "patch": "5", "prerelease": "alpha", "build": "1.2", "fullversion": "3.4.5-alpha+1.2"}'
+          
+          - input_string: '1.0.4'
+            input_regex: ''
+            expected_outputs: '{"major":"1","minor":"0", "patch": "4", "prerelease": "", "build": "", "fullversion": "1.0.4"}'
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install packages and build
+        run: |
+          npm install assert
+          npm install && npm run build 
+
+      - name: Run action
+        id: self-action
+        uses: ./
+        with:
+          input_string: '${{ matrix.input_string }}'
+          version_extractor_regex: '${{ matrix.input_regex }}'
+
+      - name: Run assertions
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const assert = require('assert');
+
+            const assertEqual = (name, expected, actual) => {
+              assert.equal(expected, actual, `Failed matching ${name} - ${expected} not equal actual ${actual}`);
+            }
+
+            const expectedResult = JSON.parse('${{ matrix.expected_outputs }}');
+
+            assertEqual('major', expectedResult.major, '${{ steps.self-action.outputs.major }}');
+            assertEqual('minor', expectedResult.minor, '${{ steps.self-action.outputs.minor }}');
+            assertEqual('patch', expectedResult.patch, '${{ steps.self-action.outputs.patch }}');
+            assertEqual('prerelease', expectedResult.prerelease, '${{ steps.self-action.outputs.prerelease }}');
+            assertEqual('build', expectedResult.build, '${{ steps.self-action.outputs.build }}');
+            assertEqual('fullversion', expectedResult.fullversion, '${{ steps.self-action.outputs.fullversion }}');
